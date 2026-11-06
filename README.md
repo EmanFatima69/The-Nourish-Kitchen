@@ -59,7 +59,7 @@ The project performs statistical analysis and visualizes nutritional information
 - Nutritional correlation heatmap
 
 📁 Project Structure
-
+```text
 The-Nourish-Kitchen/
 │
 ├── app.py
@@ -74,7 +74,7 @@ The-Nourish-Kitchen/
 ├── .gitignore
 ├── .env.example
 │
-└── recipes.db
+└── recipes.db ```
 
 
 
