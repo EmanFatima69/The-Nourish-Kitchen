@@ -10,15 +10,20 @@ from extraction import fetch_spoonacular_recipe
 from validation import recipe_to_model
 
 
-def run_etl(dish_name: str) -> dict[str, Any]:
+def run_etl(dish_name: str, api_key: str = None) -> dict[str, Any]:
     load_dotenv()
-    api_key = os.getenv("SPOONACULAR_API_KEY")
+
     if not api_key:
-        raise ValueError("SPOONACULAR_API_KEY is missing from your .env file.")
+        api_key = os.getenv("SPOONACULAR_API_KEY")
+
+    if not api_key:
+        raise ValueError("SPOONACULAR_API_KEY is missing.")
 
     start_time = time.time()
     initialize_database()
+
     raw_data = fetch_spoonacular_recipe(dish_name, api_key)
+
     if raw_data is None:
         return {"status": "not_found", "message": "No matching recipe was found."}
 

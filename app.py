@@ -293,59 +293,105 @@ def style_table(dataframe, hide_index=False):
 
 
 if page == "🔎  Recipe Search":
-    section_title("Find something delicious", "Search a dish to collect its recipe and nutrition details.")
-    if not API_KEY:
-        st.warning("Add your Spoonacular API key to the .env file, then restart the application.")
+    section_title(
+        "Find something delicious",
+        "Search a dish to collect its recipe and nutrition details."
+    )
+
     with st.form("recipe_search_form"):
+
         user_api_key = st.text_input(
-        "🔑 Enter Your Own Spoonacular API Key (Optional):",
-        type="password",
-    help="Enter your own key to use your personal API quota. Leave blank to use the application's shared key."
-)
+            "🔑 Enter Your Own Spoonacular API Key (Optional):",
+            type="password",
+            help="Enter your own key to use your personal API quota. Leave blank to use the application's shared key."
+        )
 
-    if user_api_key.strip():
-        active_api_key = user_api_key.strip()
-    else:
-        active_api_key = API_KEY
+        if user_api_key.strip():
+            active_api_key = user_api_key.strip()
+        else:
+            active_api_key = API_KEY
 
-    dish_name = st.text_input(
-    "What would you like to cook?",
-    placeholder="e.g. chicken biryani"
-)
+        dish_name = st.text_input(
+            "What would you like to cook?",
+            placeholder="e.g. chicken biryani"
+        )
 
-    submitted = st.form_submit_button("Find and save recipe")
+        submitted = st.form_submit_button("Find and save recipe")
+
     if submitted:
         if not dish_name.strip():
             st.error("Please enter a recipe name to get started.")
-        elif not API_KEY:
-            st.error("Your API key is missing. Add it to .env and restart the app.")
+
+        elif not active_api_key:
+            st.error("Your API key is missing. Please enter your own API key.")
+
         else:
             with st.spinner("Finding your recipe..."):
                 try:
-                    result = run_etl(dish_name)
+                    result = run_etl(dish_name, active_api_key)
+
                     if result["status"] == "not_found":
-                        st.info("We couldn't find a matching recipe. Try another dish name.")
+                        st.info(
+                            "We couldn't find a matching recipe. Try another dish name."
+                        )
+
                     else:
                         recipe = result["recipe"]
+
                         st.success("Your recipe is ready and saved!")
-                        st.metric("ETL Execution Time", f"{result['elapsed_seconds']} seconds")
+                        st.metric(
+                            "ETL Execution Time",
+                            f"{result['elapsed_seconds']} seconds"
+                        )
+
                         left, right = st.columns([1, 2])
+
                         with left:
                             if recipe.image_url:
                                 st.image(recipe.image_url, width="stretch")
+
                         with right:
                             st.subheader(recipe.title)
+
                             x, y, z = st.columns(3)
-                            x.metric("Calories", recipe.calories if recipe.calories is not None else "—")
-                            y.metric("Ready in", f"{recipe.ready_in_minutes} min" if recipe.ready_in_minutes is not None else "—")
-                            z.metric("Servings", recipe.servings if recipe.servings is not None else "—")
-                            st.write(f"**Protein:** {recipe.protein if recipe.protein is not None else '—'} g")
-                            st.write(f"**Fat:** {recipe.fat if recipe.fat is not None else '—'} g")
-                            st.write(f"**Carbohydrates:** {recipe.carbs if recipe.carbs is not None else '—'} g")
+
+                            x.metric(
+                                "Calories",
+                                recipe.calories if recipe.calories is not None else "—"
+                            )
+
+                            y.metric(
+                                "Ready in",
+                                f"{recipe.ready_in_minutes} min"
+                                if recipe.ready_in_minutes is not None else "—"
+                            )
+
+                            z.metric(
+                                "Servings",
+                                recipe.servings
+                                if recipe.servings is not None else "—"
+                            )
+
+                            st.write(
+                                f"**Protein:** {recipe.protein if recipe.protein is not None else '—'} g"
+                            )
+                            st.write(
+                                f"**Fat:** {recipe.fat if recipe.fat is not None else '—'} g"
+                            )
+                            st.write(
+                                f"**Carbohydrates:** {recipe.carbs if recipe.carbs is not None else '—'} g"
+                            )
+
                         with st.expander("Ingredients"):
-                            st.write(recipe.ingredients or "Ingredient details are not available.")
+                            st.write(
+                                recipe.ingredients or "Ingredient details are not available."
+                            )
+
                         with st.expander("Cooking instructions"):
-                            st.write(recipe.instructions or "Instructions are not available.")
+                            st.write(
+                                recipe.instructions or "Instructions are not available."
+                            )
+
                 except Exception as error:
                     st.error(f"We couldn't process that recipe: {error}")
 
