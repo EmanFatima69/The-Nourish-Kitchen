@@ -298,18 +298,22 @@ if page == "🔎  Recipe Search":
         st.warning("Add your Spoonacular API key to the .env file, then restart the application.")
     with st.form("recipe_search_form"):
         user_api_key = st.text_input(
-    "🔑 Enter Your Own Spoonacular API Key (Optional):",
-    type="password",
+        "🔑 Enter Your Own Spoonacular API Key (Optional):",
+        type="password",
     help="Enter your own key to use your personal API quota. Leave blank to use the application's shared key."
 )
 
-    
     if user_api_key.strip():
         active_api_key = user_api_key.strip()
     else:
         active_api_key = API_KEY
-        dish_name = st.text_input("What would you like to cook?", placeholder="e.g. chicken biryani")
-        submitted = st.form_submit_button("Find and save recipe")
+
+    dish_name = st.text_input(
+    "What would you like to cook?",
+    placeholder="e.g. chicken biryani"
+)
+
+    submitted = st.form_submit_button("Find and save recipe")
     if submitted:
         if not dish_name.strip():
             st.error("Please enter a recipe name to get started.")
