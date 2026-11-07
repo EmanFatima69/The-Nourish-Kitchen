@@ -16,7 +16,18 @@ from database import delete_recipe, initialize_database, load_recipes
 from etl_pipeline import run_etl
 
 load_dotenv()
-API_KEY = os.getenv("SPOONACULAR_API_KEY", "")
+
+API_KEY = os.getenv("SPOONACULAR_API_KEY")
+
+if not API_KEY:
+    try:
+        API_KEY = st.secrets["SPOONACULAR_API_KEY"]
+    except Exception:
+        API_KEY = None
+
+if not API_KEY:
+    st.error("Spoonacular API key is missing. Please configure it.")
+    st.stop()
 
 st.set_page_config(page_title="The Nourish Kitchen", page_icon="🍲", layout="centered")
 
