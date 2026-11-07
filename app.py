@@ -303,7 +303,13 @@ if page == "🔎  Recipe Search":
         user_api_key = st.text_input(
             "🔑 Enter Your Own Spoonacular API Key (Optional):",
             type="password",
-            help="Enter your own key to use your personal API quota. Leave blank to use the application's shared key."
+            help="Sign up for a Spoonacular account to get your API key:" \
+            "https://spoonacular.com/food-api/console/#Dashboard"
+        )
+
+        st.markdown(
+            "Don't have an API Key? [Get one from " \
+            "Spoonacular](https://spoonacular.com/food-api/console#Dashboard)"
         )
 
         if user_api_key.strip():
