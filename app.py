@@ -15,6 +15,8 @@ from EDA import (
 from database import delete_recipe, initialize_database, load_recipes
 from etl_pipeline import run_etl
 
+
+# Load API key from local .env or Streamlit Cloud Secrets
 load_dotenv()
 
 API_KEY = os.getenv("SPOONACULAR_API_KEY")
@@ -24,10 +26,6 @@ if not API_KEY:
         API_KEY = st.secrets["SPOONACULAR_API_KEY"]
     except Exception:
         API_KEY = None
-
-if not API_KEY:
-    st.error("Spoonacular API key is missing. Please configure it.")
-    st.stop()
 
 st.set_page_config(page_title="The Nourish Kitchen", page_icon="🍲", layout="centered")
 
@@ -299,6 +297,17 @@ if page == "🔎  Recipe Search":
     if not API_KEY:
         st.warning("Add your Spoonacular API key to the .env file, then restart the application.")
     with st.form("recipe_search_form"):
+        user_api_key = st.text_input(
+    "🔑 Enter Your Own Spoonacular API Key (Optional):",
+    type="password",
+    help="Enter your own key to use your personal API quota. Leave blank to use the application's shared key."
+)
+
+    
+    if user_api_key.strip():
+        active_api_key = user_api_key.strip()
+    else:
+        active_api_key = API_KEY
         dish_name = st.text_input("What would you like to cook?", placeholder="e.g. chicken biryani")
         submitted = st.form_submit_button("Find and save recipe")
     if submitted:
