@@ -58,6 +58,37 @@ The project performs statistical analysis and visualizes nutritional information
 - Calorie distribution chart
 - Nutritional correlation heatmap
 
+
+Application Screenshots
+
+1. Recipe Search Page
+
+"Recipe Search Page" (screenshots/01-recipe-search.png)
+
+2. Recipe Search Results
+
+"Recipe Search Results" (screenshots/02-recipe-results.png)
+
+3. Statistical Analysis
+
+"Statistical Analysis" (screenshots/03-statistical-analysis.png)
+
+4. Macronutrient Distribution – Doughnut Chart
+
+"Macronutrient Doughnut Chart" (screenshots/04-macronutrient-doughnut.png)
+
+5. Calorie Distribution
+
+"Calorie Distribution" (screenshots/05-calorie-distribution.png)
+
+6. Calorie Distribution – Histogram with Distribution Curve
+
+"Calorie Distribution Histogram" (screenshots/06-calorie-distribution-histogram.png)
+
+7. Nutritional Correlation Heatmap
+
+"Nutritional Correlation Heatmap" (screenshots/07-nutritional-correlation-heatmap.png)
+
 📁 Project Structure
 ```text
 The-Nourish-Kitchen/
