@@ -178,4 +178,15 @@ Limitations:
 API Configuration:
 A valid Spoonacular API key is required. Users must provide their own API key through environment variables.
 
-Note: API availability depends on the remaining daily quota and Spoonacular's service availability.
+
+
+Personal API Key Support
+
+The Nourish Kitchen allows users to enter their own Spoonacular API key when searching for recipes.
+
+- Users can provide their personal API key to make API requests using their own quota.
+- If no personal key is entered, the application automatically uses the shared API key configured by the application owner.
+- Personal API keys are used for the current recipe search and are not stored in the database.
+- This feature helps distribute API usage across individual Spoonacular accounts rather than relying entirely on one shared quota.
+
+Note: A valid Spoonacular API key is required to search for recipes.
